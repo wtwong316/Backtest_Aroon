@@ -1,0 +1,22 @@
+{
+    "query": {"bool": {"must": [{"range": {"date": {"gte": "2020-12-01", "lte": "2021-05-31"}}}, {"term": {"symbol": "%s"}}]}}, 
+    "aggs": {
+        "Backtest_Aroon": {
+            "date_histogram": {"field": "date", "fixed_interval": "1d", "format": "yyyy-MM-dd"},
+            "aggs": {
+                "SDaily": {"bucket_selector": {"buckets_path": {"count": "_count"}, "script": "params.count > 0"}}, 
+                "Daily": {"avg": {"field": "close"}}, "DateStr": {"min": {"field": "date"}}, 
+                "MMaxPeriod": {"moving_fn": {"script": "int i = 0; float max=0f; int maxIndex=0; for (float daily : values){if (daily >= max){maxIndex=i; max=daily;} i++;} return values.length - 1 - maxIndex;", "window": 26, "buckets_path": "Daily", "shift": 1}}, 
+                "MMinPeriod": {"moving_fn": {"script": "int i = 0; float min=10000f; int minIndex=0; for (float daily : values){if (daily <= min){minIndex=i; min=daily;} i++;} return values.length - 1 - minIndex;", "window": 26, "buckets_path": "Daily", "shift": 1}}, 
+                "AroonUp": {"bucket_script": {"buckets_path": {"MMaxPeriod": "MMaxPeriod"}, "script": "100 * (25.0 - params.MMaxPeriod)/25"}}, 
+                "AroonDown": {"bucket_script": {"buckets_path": {"MMinPeriod": "MMinPeriod"}, "script": "100 * (25.0 - params.MMinPeriod)/25"}}, 
+                "AroonOS": {"bucket_script": {"buckets_path": {"AroonUp": "AroonUp", "AroonDown": "AroonDown"}, "script": "params.AroonUp - params.AroonDown"}}, 
+                "PRE_AroonOS": {"moving_fn": {"script": "MovingFunctions.sum(values)", "window": 1, "buckets_path": "AroonOS"}}, 
+                "AroonOS_Type": {"bucket_script": {"buckets_path": {"AroonOS":"AroonOS", "PRE_AroonOS":"PRE_AroonOS"}, 
+                    "script": "(params.AroonOS == 0) ? ( params.PRE_AroonOS < 0 ? 1 : -1) : ((params.PRE_AroonOS > 0 && params.AroonOS < 0 ) ? -1 : (params.PRE_AroonOS < 0 && params.AroonOS > 0) ? 1 : 0)"}},
+                "S_Date": {"bucket_selector": {"buckets_path": {"DateStr": "DateStr"}, "script": "params.DateStr >= 1610668800000L"}}
+            }
+        }
+    }, 
+    "from": 0, "size": 0
+}
