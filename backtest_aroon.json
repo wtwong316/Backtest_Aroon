@@ -13,8 +13,8 @@
                 "AroonOS": {"bucket_script": {"buckets_path": {"AroonUp": "AroonUp", "AroonDown": "AroonDown"}, "script": "params.AroonUp - params.AroonDown"}}, 
                 "PRE_AroonOS": {"moving_fn": {"script": "MovingFunctions.sum(values)", "window": 1, "buckets_path": "AroonOS"}}, 
                 "AroonOS_Type": {"bucket_script": {"buckets_path": {"AroonOS":"AroonOS", "PRE_AroonOS":"PRE_AroonOS"}, 
-                    "script": "(params.AroonOS == 0) ? ( params.PRE_AroonOS < 0 ? 1 : -1) : ((params.PRE_AroonOS > 0 && params.AroonOS < 0 ) ? -1 : (params.PRE_AroonOS < 0 && params.AroonOS > 0) ? 1 : 0)"}},
-                "S_Date": {"bucket_selector": {"buckets_path": {"DateStr": "DateStr"}, "script": "params.DateStr >= 1610668800000L"}}
+                    "script": "(params.AroonOS == 0) ? ( params.PRE_AroonOS < 0 ? -1 : 1) : ((params.PRE_AroonOS > 0 && params.AroonOS < 0 ) ? 1 : (params.PRE_AroonOS < 0 && params.AroonOS > 0) ? -1 : 0)"}},
+                "S_Date": {"bucket_selector": {"buckets_path": {"DateStr": "DateStr"}, "script": "params.DateStr >= 1612137600000L"}}
             }
         }
     }, 
