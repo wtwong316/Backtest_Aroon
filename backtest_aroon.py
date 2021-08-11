@@ -16,20 +16,20 @@ def get_data(inputfile, symbol):
 
 # get the command line parameters for the trading policy and the ticker symbol
 def get_opt(argv):
-    inputfile = 'backtest_stochastic.json'
+    inputfile = 'backtest_aroon.json'
     symbol = 'FDEV'
 
     try:
         opts, args = getopt.getopt(argv, "hi:s:")
     except getopt.GetoptError:
-        print('backtest_stochstics -i <inputfile> -s <symbol>')
-        print('example: backtest_stochastics -i backtest_stochastic.json -s FDEV')
+        print('backtest_aroon -i <inputfile> -s <symbol>')
+        print('example: backtest_aroon -i backtest_aroon.json -s FDEV')
         sys.exit(-1)
 
     for opt, arg in opts:
         if opt == '-h':
-            print('backtest_stochastics -i <inputfile> -s <symbol>')
-            print('example: backtest_rsi -i backtest_stochastic.json -s FDEV')
+            print('backtest_aroon -i <inputfile> -s <symbol>')
+            print('example: backtest_aroon -i backtest_aroon.json -s FDEV')
             sys.exit(0)
         elif opt in ('-i'):
             inputfile = arg
