@@ -1,5 +1,5 @@
 {
-    "query": {"bool": {"must": [{"range": {"date": {"gte": "2020-12-01", "lte": "2021-05-31"}}}, {"term": {"symbol": "%s"}}]}}, 
+    "query": {"bool": {"must": [{"range": {"date": {"gte": "2020-12-15", "lte": "2021-05-31"}}}, {"term": {"symbol": "%s"}}]}}, 
     "aggs": {
         "Backtest_Aroon": {
             "date_histogram": {"field": "date", "fixed_interval": "1d", "format": "yyyy-MM-dd"},
